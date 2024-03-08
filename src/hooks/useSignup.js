@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {projectAuth} from "../firebase/config";
 import {useAuthContext} from "./useAuthContext";
 
-
 export const useSignup = () => {
     // State
     const [isPending, setIsPending] = useState(false);
@@ -24,7 +23,7 @@ export const useSignup = () => {
             }
 
             // Update displayName
-            await res.user.updateProfile(displayName);
+            await res.user.updateProfile({ displayName });
 
             // Dispatch login
             dispatch({ type: 'LOGIN', user: res.user });

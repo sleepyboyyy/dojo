@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {useAuthContext} from "./useAuthContext";
 import {projectAuth} from "../firebase/config";
 
-
 export const useLogout = () => {
     // State
     const [isPending, setIsPending] = useState(false);
