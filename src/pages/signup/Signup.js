@@ -47,8 +47,8 @@ function Signup() {
         }
 
         // large image selection handle
-        if (selected.size > 1000000) {
-            setThumbnailError('Image file size must be less than 1Mb');
+        if (selected.size > 5000000) {
+            setThumbnailError('Image file size must be less than 5Mb');
             return
         }
 
