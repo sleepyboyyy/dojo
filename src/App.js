@@ -1,35 +1,62 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+// React
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {useAuthContext} from "./hooks/useAuthContext";
 
 // styles
 import './App.css';
+
+// pages and components
 import Dashboard from "./pages/dashboard/Dashboard";
 import Create from "./pages/create/Create";
 import Project from "./pages/project/Project";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
-
-// pages and components
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import OnlineUsers from "./components/OnlineUsers";
 
 function App() {
+  const { user, authIsReady } = useAuthContext();
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <div className="container">
-          <Routes>
+      {authIsReady && (
+        <BrowserRouter>
+          {user && <Sidebar />}
+          <div className="container">
+            <Navbar />
+            <Routes>
 
-            <Route path="/" element={ <Dashboard /> } />
+              <Route
+                  path="/"
+                  element={ user ? <Dashboard /> : <Navigate to="/login" /> }
+              />
 
-            <Route path="create" element={ <Create /> } />
+              <Route
+                  path="create"
+                  element={ user ? <Create /> : <Navigate to="/login" /> }
+              />
 
-            <Route path="projects/:id" element={ <Project /> } />
+              <Route
+                  path="projects/:id"
+                  element={ user ? <Project /> : <Navigate to="/login" /> }
+              />
 
-            <Route path="login" element={ <Login /> } />
+              <Route
+                  path="login"
+                  element={ user ? <Navigate to="/" /> : <Login /> }
+              />
 
-            <Route path="signup" element={ <Signup /> } />
+              <Route
+                  path="signup"
+                  element={ user ? <Navigate to="/" /> : <Signup /> }
+              />
 
-          </Routes>
-        </div>
-      </BrowserRouter>
+            </Routes>
+          </div>
+          {user && <OnlineUsers />}
+        </BrowserRouter>
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {projectAuth} from "../firebase/config";
+import {projectAuth, projectFirestore} from "../firebase/config";
 import {useAuthContext} from "./useAuthContext";
 
 export const useLogin = () => {
@@ -18,6 +18,13 @@ export const useLogin = () => {
             // Login user
             const res = await projectAuth.signInWithEmailAndPassword(email, password);
             dispatch({ type: 'LOGIN', payload: res.user });
+
+            // Update user online status
+            await projectFirestore.collection('users')
+                .doc(res.user.uid)
+                .update({
+                    online: true
+                })
 
             // Manage state wrapping in cleanup func.
             if (!isCancelled) {
